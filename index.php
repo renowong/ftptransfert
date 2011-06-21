@@ -6,7 +6,7 @@ if(!isset($_POST["submit"])){?>
 <table align="center">
 <tr>
 <td align="right">
-Selectionner votre fichier:
+Selectionner votre fichier (30 Mo maximum!):
 </td>
 <td>
 <input name="userfile" type="file" size="50">
@@ -25,7 +25,10 @@ Selectionner votre fichier:
 <?}
 else 
 {
- 
+ini_set('upload_max_filesize', '10M');  
+ini_set('post_max_size', '10M');  
+ini_set('max_input_time', 300);  
+ini_set('max_execution_time', 300); 
 set_time_limit(300);//for setting 
  
 $paths="/";
@@ -60,16 +63,19 @@ if ((!$conn_id) || (!$login_result)) {
        //echo "Connected to $ftp_server, for user $ftp_user_name".".....";
    }
  
+// turn passive mode on
+ftp_pasv($conn_id, TRUE);
+ 
 // upload the file to the path specified
 $upload = ftp_put($conn_id, $paths.'/'.$name, $filep, FTP_BINARY);
  
 // check the upload status
 if (!$upload) {
-       echo "FTP upload has encountered an error!";
+       echo "FTP upload has encountered an error while uploading!";
    } else {
        echo "Uploaded file with name $name to $ftp_server <br>";
        echo "Votre lien est : <h3><a href='http://".HOST."/getfile.php?id=$name' target='_blank'>http://".HOST."/getfile.php?id=$name</a></h3>";
-       echo "Devel link : <h3><a href='getfile.php?id=$name' target='_blank'>http://localhost/ftptransfert/getfile.php?id=$name</a></h3>";
+       //echo "Devel link : <h3><a href='getfile.php?id=$name' target='_blank'>http://localhost/ftptransfert/getfile.php?id=$name</a></h3>";
    }
  
 // close the FTP connection
