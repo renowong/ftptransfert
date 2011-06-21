@@ -1,12 +1,12 @@
 <?
 include("global_vars.php");
-if(!isset($_POST["submit"])){?>
+//if(!isset($_POST["submit"])){?>
  
 <form action="index.php" method="POST" enctype="multipart/form-data">
 <table align="center">
 <tr>
 <td align="right">
-Selectionner votre fichier (30 Mo maximum!):
+S&eacute;lectionner votre fichier (30 Mo maximum!):
 </td>
 <td>
 <input name="userfile" type="file" size="50">
@@ -16,15 +16,16 @@ Selectionner votre fichier (30 Mo maximum!):
 <table align="center">
 <tr>
 <td align="center">
-<input type="submit" name="submit" value="Transferer" />
+<input type="submit" name="submit" value="Transf&eacute;rer" />
 </td>
 </tr>
  
 </table>
 </form>
-<?}
-else 
-{
+<?
+echo "<hr>";
+
+if(isset($_POST["submit"])){
 set_time_limit(300);//for setting 
  
 $paths="/";
@@ -39,7 +40,7 @@ $ftp_user_pass=DBPASSWORD;
  
 $truename=$_FILES['userfile']['name'];
  
-$name=md5($truename);
+$name=md5($truename.date('Y-m-d'));
 //print $truename;
 
 updatedb($name,$truename);
@@ -69,15 +70,13 @@ $upload = ftp_put($conn_id, $paths.'/'.$name, $filep, FTP_BINARY);
 if (!$upload) {
        echo "FTP upload has encountered an error while uploading!";
    } else {
-       echo "Uploaded file with name $name to $ftp_server <br>";
+       //echo "Uploaded file with name $name to $ftp_server <br>";
        echo "Votre lien est : <h3><a href='http://".HOST."/getfile.php?id=$name' target='_blank'>http://".HOST."/getfile.php?id=$name</a></h3>";
        //echo "Devel link : <h3><a href='getfile.php?id=$name' target='_blank'>http://localhost/ftptransfert/getfile.php?id=$name</a></h3>";
    }
  
 // close the FTP connection
 ftp_close($conn_id);	
- 
- 
 
 }
 
