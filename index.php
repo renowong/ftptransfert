@@ -68,7 +68,7 @@ if (!$upload) {
        echo "FTP upload has encountered an error!";
    } else {
        echo "Uploaded file with name $name to $ftp_server <br>";
-       echo "Votre lien est : <h3><a href='http://192.168.0.8/getfile.php?id=$name' target='_blank'>http://192.168.0.8/getfile.php?id=$name</a></h3>";
+       echo "Votre lien est : <h3><a href='http://".HOST."/getfile.php?id=$name' target='_blank'>http://".HOST."/getfile.php?id=$name</a></h3>";
        echo "Devel link : <h3><a href='getfile.php?id=$name' target='_blank'>http://localhost/ftptransfert/getfile.php?id=$name</a></h3>";
    }
  

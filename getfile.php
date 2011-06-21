@@ -3,13 +3,12 @@ include("global_vars.php");
 
 $id = $_GET["id"];
 $name = getname($id);
-echo $name."<br>";
 
 getfile($id,$name);
 
 function getfile($id,$name){
 $ftp_user_name = DBUSER;
-$ftp_user_pass = DBUSER;
+$ftp_user_pass = DBPASSWORD;
 $ftp_server = HOST;
 $local_file = "/tmp/".$name;
 $server_file = $id;
@@ -31,13 +30,40 @@ ftp_pasv($conn_id, TRUE);
 
 // try to download $server_file and save to $local_file
 if (ftp_get($conn_id, $local_file, $server_file, FTP_BINARY)) {
-    header('Content-Length: '. filesize($local_file));
-    header('Content-Type: application/octet-stream');
-    header('Content-Disposition: attachment; filename="'.basename($local_file).'"');
-    header('Content-Transfer-Encoding: binary');
-    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-    readfile($local_file); // send the file
-    exit;  // make sure no extraneous characters get appended
+    $file_extension = strtolower(substr(strrchr($local_file,"."),1));
+
+    switch ($file_extension) {
+               case "pdf": $ctype="application/pdf"; break;
+               case "exe": $ctype="application/octet-stream"; break;
+               case "zip": $ctype="application/zip"; break;
+               case "doc": $ctype="application/msword"; break;
+               case "xls": $ctype="application/vnd.ms-excel"; break;
+               case "ppt": $ctype="application/vnd.ms-powerpoint"; break;
+               case "gif": $ctype="image/gif"; break;
+               case "png": $ctype="image/png"; break;
+               case "jpe": case "jpeg":
+               case "jpg": $ctype="image/jpg"; break;
+               case "odt": $ctype="application/vnd.oasis.opendocument.text"; break;
+               case "ods": $ctype="application/vnd.oasis.opendocument.spreadsheet"; break; 
+               case "odp": $ctype="application/vnd.oasis.opendocument.presentation"; break; 
+               case "odg": $ctype="application/vnd.oasis.opendocument.graphics"; break; 
+               default: $ctype="application/force-download";
+           }
+
+           if (!file_exists($local_file)) {
+               die("NO FILE HERE");
+           }
+           
+        header("Pragma: public");
+           header("Expires: 0");
+           header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+           header("Cache-Control: private",false);
+           header("Content-Type: $ctype");
+           header("Content-Disposition: attachment; filename=\"".basename($local_file)."\";");
+           header("Content-Transfer-Encoding: binary");
+           header("Content-Length: ".@filesize($local_file));
+           set_time_limit(0);
+           @readfile("$local_file") or die("File not found.");
 }
 
 // close the connection
