@@ -1,7 +1,23 @@
 <?
 include("global_vars.php");
-//if(!isset($_POST["submit"])){?>
- 
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+       <title>FAAA upload</title>
+</head>
+<body>
+<table align="center">
+       <tr>
+              <td>
+                     <img src="logo.jpg"/>
+              </td>
+              <td>
+                     <h2>Faa'a Upload</h2>
+              </td>
+       </tr>
+</table>
 <form action="index.php" method="POST" enctype="multipart/form-data">
 <table align="center">
 <tr>
@@ -23,6 +39,9 @@ S&eacute;lectionner votre fichier (30 Mo maximum!):
  
 </table>
 </form>
+
+</body>
+</html>
 <?
 echo "<hr>";
 
