@@ -5,8 +5,9 @@ include("global_vars.php");
 <form action="index.php" method="POST" enctype="multipart/form-data">
 <table align="center">
 <tr>
-<td align="right">
+<td align="right"><p>
 S&eacute;lectionner votre fichier (30 Mo maximum!):
+</p>
 </td>
 <td>
 <input name="userfile" type="file" size="50">
@@ -53,7 +54,7 @@ $login_result = ftp_login($conn_id, $ftp_user_name, $ftp_user_pass);
  
 // check connection and login result
 if ((!$conn_id) || (!$login_result)) {
-       echo "FTP connection has encountered an error!";
+       echo "Erreur de connexion FTP!";
        echo "Attempted to connect to $ftp_server for user $ftp_user_name....";
        exit;
    } else {
@@ -68,10 +69,11 @@ $upload = ftp_put($conn_id, $paths.'/'.$name, $filep, FTP_BINARY);
  
 // check the upload status
 if (!$upload) {
-       echo "FTP upload has encountered an error while uploading!";
+       echo "<p>Erreur en cours de chargement!</p>";
    } else {
        //echo "Uploaded file with name $name to $ftp_server <br>";
        echo "Votre lien est : <h3><a href='http://".HOST."/getfile.php?id=$name' target='_blank'>http://".HOST."/getfile.php?id=$name</a></h3>";
+       echo "<p>Copiez ce lien et envoyez le &agrave; votre correspondant.</p>";
        //echo "Devel link : <h3><a href='getfile.php?id=$name' target='_blank'>http://localhost/ftptransfert/getfile.php?id=$name</a></h3>";
    }
  
